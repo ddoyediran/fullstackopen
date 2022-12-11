@@ -1,6 +1,6 @@
 ## Title: Programming a server with NodeJS and Express
 
-### Topic covered
+### Topic(s) covered
 
 1. Node.js and Express
 
