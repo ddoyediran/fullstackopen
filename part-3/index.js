@@ -1,3 +1,4 @@
+const { response, request } = require("express");
 const express = require("express");
 const app = express();
 
@@ -30,9 +31,33 @@ app.get("/api/notes", (request, response) => {
   response.json(notes);
 });
 
+// GET: fetches a single resource
+app.get("/api/notes/:id", (request, response) => {
+  const id = Number(request.params.id);
+  console.log(id);
+  const note = notes.find((note) => {
+    return note.id === id;
+  });
+  if (note) {
+    return response.json(note);
+  }
+
+  return response.status(404).end();
+});
+
+// DELETE Remove a single resource
+app.delete("/api/notes/:id", (request, response) => {
+  const id = Number(request.params.id);
+  notes = notes.filter((note) => {
+    return note.id != id;
+  });
+
+  response.status(204).end();
+});
+
 const PORT = 3001;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
 
-// https://fullstackopen.com/en/part3/node_js_and_express#express
+// https://fullstackopen.com/en/part3/node_js_and_express#nodemon
