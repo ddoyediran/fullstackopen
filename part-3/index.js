@@ -4,10 +4,21 @@ const cors = require("cors");
 
 const app = express();
 
+// Middleware declaration
+const requestLogger = (request, response, next) => {
+  console.log("Method: ", request.method);
+  console.log("Path: ", request.path);
+  console.log("Body: ", request.body);
+  console.log("---");
+  next();
+};
+
+//app.use(express.static("build"));
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(requestLogger);
+app.use(express.static("build"));
 
 let notes = [
   {
@@ -111,12 +122,3 @@ function generateId() {
 
   return maxId + 1;
 }
-
-// Middleware declaration
-const requestLogger = (request, response, next) => {
-  console.log("Method: ", request.method);
-  console.log("Path: ", request.path);
-  console.log("Body: ", request.body);
-  console.log("---");
-  next();
-};
