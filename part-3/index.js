@@ -13,6 +13,7 @@ const requestLogger = (request, response, next) => {
   next();
 };
 
+// middleware
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
