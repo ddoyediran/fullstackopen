@@ -38,3 +38,11 @@ mongoose
     return mongoose.connection.close();
   })
   .catch((err) => console.log(err));
+
+// Fetching data from the database
+Note.find({}).then((result) => {
+  result.forEach((note) => {
+    console.log(note);
+  });
+  mongoose.connection.close();
+});
