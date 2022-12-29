@@ -1,8 +1,22 @@
 const { response, request } = require("express");
 const express = require("express");
 const cors = require("cors");
+const mongoose = require("mongoose");
 
 const app = express();
+
+// Mongoose
+const url = `mongodb+srv://fullstack:<password>@cluster0.o1opl.mongodb.net/noteApp?retryWrites=true&w=majority`;
+
+mongoose.connect(url);
+
+const noteSchema = new mongoose.Schema({
+  content: String,
+  date: Date,
+  important: Boolean,
+});
+
+const Note = mongoose.model("Note", noteSchema);
 
 // Middleware declaration
 const requestLogger = (request, response, next) => {
