@@ -5,8 +5,9 @@ const mongoose = require("mongoose");
 
 const app = express();
 
-// Mongoose
-const url = `mongodb+srv://fullstack:<password>@cluster0.o1opl.mongodb.net/noteApp?retryWrites=true&w=majority`;
+const password = process.argv[2];
+
+const url = `mongodb+srv://noteapp:${password}@cluster0.4idts.mongodb.net/noteApp?retryWrites=true&w=majority`;
 
 mongoose.connect(url);
 
