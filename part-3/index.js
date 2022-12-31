@@ -1,13 +1,17 @@
 const { response, request } = require("express");
+require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
-const mongoose = require("mongoose");
+const Note = require("./models/note");
+// const mongoose = require("mongoose");
 
 const app = express();
 
-const password = process.argv[2];
+const PORT = process.env.PORT || 3001;
 
-const url = `mongodb+srv://noteapp:${password}@cluster0.4idts.mongodb.net/noteApp?retryWrites=true&w=majority`;
+// const password = process.argv[2];
+
+// const url = `mongodb+srv://noteapp:${password}@cluster0.4idts.mongodb.net/noteApp?retryWrites=true&w=majority`;
 
 mongoose.connect(url);
 
@@ -133,7 +137,7 @@ const unknownEndpoint = (request, response) => {
 
 app.use(unknownEndpoint);
 
-const PORT = process.env.PORT || 3001;
+// const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
