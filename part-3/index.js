@@ -19,6 +19,15 @@ const noteSchema = new mongoose.Schema({
 
 const Note = mongoose.model("Note", noteSchema);
 
+// delete the __v in the schema
+noteSchema.set("toJSON", {
+  transform: (document, returnedObject) => {
+    returnedObject.id = returnedObject._id.toString();
+    delete returnedObject._id;
+    delete returnedObject.__v;
+  },
+});
+
 // Middleware declaration
 const requestLogger = (request, response, next) => {
   console.log("Method: ", request.method);
