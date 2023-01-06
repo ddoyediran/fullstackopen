@@ -1,4 +1,4 @@
-const { response, request } = require("express");
+// const { response, request } = require("express");
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
@@ -13,24 +13,24 @@ const PORT = process.env.PORT || 3001;
 
 // const url = `mongodb+srv://noteapp:${password}@cluster0.4idts.mongodb.net/noteApp?retryWrites=true&w=majority`;
 
-mongoose.connect(url);
+// mongoose.connect(url);
 
-const noteSchema = new mongoose.Schema({
-  content: String,
-  date: Date,
-  important: Boolean,
-});
+// const noteSchema = new mongoose.Schema({
+//   content: String,
+//   date: Date,
+//   important: Boolean,
+// });
 
-const Note = mongoose.model("Note", noteSchema);
+// const Note = mongoose.model("Note", noteSchema);
 
 // delete the __v in the schema
-noteSchema.set("toJSON", {
-  transform: (document, returnedObject) => {
-    returnedObject.id = returnedObject._id.toString();
-    delete returnedObject._id;
-    delete returnedObject.__v;
-  },
-});
+// noteSchema.set("toJSON", {
+//   transform: (document, returnedObject) => {
+//     returnedObject.id = returnedObject._id.toString();
+//     delete returnedObject._id;
+//     delete returnedObject.__v;
+//   },
+// });
 
 // Middleware declaration
 const requestLogger = (request, response, next) => {
@@ -81,18 +81,25 @@ app.get("/api/notes", (request, response) => {
   return;
 });
 
+// // GET: fetches a single resource
+// app.get("/api/notes/:id", (request, response) => {
+//   const id = Number(request.params.id);
+//   console.log(id);
+//   const note = notes.find((note) => {
+//     return note.id === id;
+//   });
+//   if (note) {
+//     return response.json(note);
+//   }
+
+//   return response.status(404).end();
+// });
+
 // GET: fetches a single resource
 app.get("/api/notes/:id", (request, response) => {
-  const id = Number(request.params.id);
-  console.log(id);
-  const note = notes.find((note) => {
-    return note.id === id;
+  Note.findById(request.params.id).then((note) => {
+    response.json(note);
   });
-  if (note) {
-    return response.json(note);
-  }
-
-  return response.status(404).end();
 });
 
 // DELETE Remove a single resource
@@ -106,30 +113,48 @@ app.delete("/api/notes/:id", (request, response) => {
 });
 
 app.post("/api/notes", (request, response) => {
-  //   const maxId = notes.length > 0 ? Math.max(...notes.map((n) => n.id)) : 0;
-  //   const note = request.body;
-  //   note.id = maxId + 1;
-
   const body = request.body;
 
-  if (!body.content) {
-    return response.status(400).json({
-      error: "content missing",
-    });
+  if (body.content === undefined) {
+    return response.status(400).json({ error: "content missing" });
   }
 
-  const note = {
+  const note = new Note({
     content: body.content,
     important: body.important || false,
     date: new Date(),
-    id: generateId(),
-  };
+  });
 
-  notes = notes.concat(note);
-
-  // console.log(note);
-  response.json(note);
+  note.save().then((savedNote) => {
+    response.json(savedNote);
+  });
 });
+
+// app.post("/api/notes", (request, response) => {
+//   //   const maxId = notes.length > 0 ? Math.max(...notes.map((n) => n.id)) : 0;
+//   //   const note = request.body;
+//   //   note.id = maxId + 1;
+
+//   const body = request.body;
+
+//   if (!body.content) {
+//     return response.status(400).json({
+//       error: "content missing",
+//     });
+//   }
+
+//   const note = {
+//     content: body.content,
+//     important: body.important || false,
+//     date: new Date(),
+//     id: generateId(),
+//   };
+
+//   notes = notes.concat(note);
+
+//   // console.log(note);
+//   response.json(note);
+// });
 
 const unknownEndpoint = (request, response) => {
   response.status(404).send({ error: "unknown endpoint" });
