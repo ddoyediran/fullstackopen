@@ -81,7 +81,7 @@ app.get("/api/notes", (request, response) => {
 // GET: fetches a single resource
 app.get("/api/notes/:id", (request, response) => {
   Note.findById(request.params.id).then((note) => {
-    return response.json(note);
+    response.json(note);
   });
 });
 
@@ -109,7 +109,7 @@ app.post("/api/notes", (request, response) => {
   });
 
   note.save().then((savedNote) => {
-    return response.json(savedNote);
+    response.json(savedNote);
   });
 });
 
