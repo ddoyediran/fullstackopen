@@ -13,24 +13,7 @@ const PORT = process.env.PORT || 3001;
 
 // const url = `mongodb+srv://noteapp:${password}@cluster0.4idts.mongodb.net/noteApp?retryWrites=true&w=majority`;
 
-// mongoose.connect(url);
-
-// const noteSchema = new mongoose.Schema({
-//   content: String,
-//   date: Date,
-//   important: Boolean,
-// });
-
 // const Note = mongoose.model("Note", noteSchema);
-
-// delete the __v in the schema
-// noteSchema.set("toJSON", {
-//   transform: (document, returnedObject) => {
-//     returnedObject.id = returnedObject._id.toString();
-//     delete returnedObject._id;
-//     delete returnedObject.__v;
-//   },
-// });
 
 // Middleware declaration
 const requestLogger = (request, response, next) => {
@@ -129,32 +112,6 @@ app.post("/api/notes", (request, response) => {
     return response.json(savedNote);
   });
 });
-
-// app.post("/api/notes", (request, response) => {
-//   //   const maxId = notes.length > 0 ? Math.max(...notes.map((n) => n.id)) : 0;
-//   //   const note = request.body;
-//   //   note.id = maxId + 1;
-
-//   const body = request.body;
-
-//   if (!body.content) {
-//     return response.status(400).json({
-//       error: "content missing",
-//     });
-//   }
-
-//   const note = {
-//     content: body.content,
-//     important: body.important || false,
-//     date: new Date(),
-//     id: generateId(),
-//   };
-
-//   notes = notes.concat(note);
-
-//   // console.log(note);
-//   response.json(note);
-// });
 
 const unknownEndpoint = (request, response) => {
   response.status(404).send({ error: "unknown endpoint" });
