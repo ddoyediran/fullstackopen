@@ -80,9 +80,16 @@ app.get("/api/notes", (request, response) => {
 
 // GET: fetches a single resource
 app.get("/api/notes/:id", (request, response) => {
-  Note.findById(request.params.id).then((note) => {
-    response.json(note);
-  });
+  Note.findById(request.params.id)
+    .then((note) => {
+      if (!note) {
+        response.status(404).end();
+      }
+      response.json(note);
+    })
+    .catch((error) => {
+      response.status(400).send({ error: "malformatted id" });
+    });
 });
 
 // DELETE Remove a single resource
