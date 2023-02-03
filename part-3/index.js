@@ -24,6 +24,26 @@ const requestLogger = (request, response, next) => {
   next();
 };
 
+// UnknownEndpoint Middleware
+const unknownEndpoint = (request, response) => {
+  response.status(404).send({ error: "unknown endpoint" });
+};
+
+/**
+ * Error handling middleware
+ * @param {error, request, response, next}
+ * @returns {JSON Error}
+ */
+const errorHandler = (error, request, response, next) => {
+  console.error(error.message);
+
+  if (error.name === "CastError") {
+    return response.status(400).send({ error: "Malformatted id" });
+  }
+
+  next(error);
+};
+
 // middleware
 app.use(cors());
 app.use(express.json());
@@ -79,11 +99,11 @@ app.get("/api/notes", (request, response) => {
 // });
 
 // GET: fetches a single resource
-app.get("/api/notes/:id", (request, response) => {
+app.get("/api/notes/:id", (request, response, next) => {
   Note.findById(request.params.id)
     .then((note) => {
       if (!note) {
-        response.status(404).end();
+        return response.status(404).end();
       }
       response.json(note);
     })
@@ -134,30 +154,6 @@ app.put("/api/notes/:id", (request, response, next) => {
     .catch((error) => next(error));
 });
 
-// UnknownEndpoint Middleware
-const unknownEndpoint = (request, response) => {
-  response.status(404).send({ error: "unknown endpoint" });
-};
-
-app.use(unknownEndpoint);
-
-/**
- * Error handling middleware
- * @param {error, request, response, next}
- * @returns {JSON Error}
- */
-const errorHandler = (error, request, response, next) => {
-  console.error(error.message);
-
-  if (error.name === "CastError") {
-    return response.status(400).send({ error: "Malformatted id" });
-  }
-
-  next(error);
-};
-
-app.use(errorHandler);
-
 /**
  *
  * @param {no params}
@@ -168,6 +164,10 @@ function generateId() {
 
   return maxId + 1;
 }
+
+app.use(unknownEndpoint);
+
+app.use(errorHandler);
 
 // const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
