@@ -87,9 +87,7 @@ app.get("/api/notes/:id", (request, response) => {
       }
       response.json(note);
     })
-    .catch((error) => {
-      response.status(400).send({ error: "malformatted id" });
-    });
+    .catch((error) => next(error));
 });
 
 // DELETE Remove a single resource
@@ -131,8 +129,6 @@ app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
 
-// https://fullstackopen.com/en/part3/node_js_and_express#nodemon
-
 /**
  *
  * @param {no params}
@@ -143,3 +139,16 @@ function generateId() {
 
   return maxId + 1;
 }
+
+/**
+ * Error handling middleware
+ * @param {error, request, response, next}
+ * @returns {JSON Error}
+ */
+const errorHandler = (error, request, response, next) => {
+  console.error(error.message);
+
+  if (error.name === "CastError") {
+    return response.status(400).send({ error: "Malformatted id" });
+  }
+};
