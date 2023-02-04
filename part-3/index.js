@@ -50,7 +50,6 @@ app.get("/", (request, response) => {
 });
 
 app.get("/api/notes", (request, response) => {
-  //response.json(notes);
   Note.find({}).then((notes) => {
     response.json(notes);
   });
@@ -82,10 +81,6 @@ app.delete("/api/notes/:id", (request, response, next) => {
 app.post("/api/notes", (request, response, next) => {
   const body = request.body;
 
-  // if (body.content === undefined) {
-  //   return response.status(400).json({ error: "content missing" });
-  // }
-
   const note = new Note({
     content: body.content,
     important: body.important || false,
@@ -103,11 +98,6 @@ app.post("/api/notes", (request, response, next) => {
 // PUT - Update the database
 app.put("/api/notes/:id", (request, response, next) => {
   const { content, important } = request.body;
-
-  // const note = {
-  //   content: body.content,
-  //   important: body.important,
-  // };
 
   Note.findByIdAndUpdate(
     request.params.id,
