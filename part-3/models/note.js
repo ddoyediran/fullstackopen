@@ -1,18 +1,18 @@
 const mongoose = require("mongoose");
 
-mongoose.set("strictQuery", false);
+// mongoose.set("strictQuery", false);
 
-const url = process.env.MONGODB_URI;
+// const url = process.env.MONGODB_URI;
 
 // Connect to the mongodb
-mongoose
-  .connect(url)
-  .then((result) => {
-    console.log("connected to MongoDB");
-  })
-  .catch((error) => {
-    console.log("error connecting to MongoDB:", error.message);
-  });
+// mongoose
+//   .connect(url)
+//   .then((result) => {
+//     console.log("connected to MongoDB");
+//   })
+//   .catch((error) => {
+//     console.log("error connecting to MongoDB:", error.message);
+//   });
 
 // Create the schema
 const noteSchema = new mongoose.Schema({
@@ -21,7 +21,10 @@ const noteSchema = new mongoose.Schema({
     minLength: 5,
     required: true,
   },
-  date: Date,
+  date: {
+    type: Date,
+    required: true,
+  },
   important: Boolean,
 });
 
