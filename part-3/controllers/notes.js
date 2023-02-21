@@ -1,16 +1,6 @@
 const notesRouter = require("express").Router();
 const Note = require("../models/note");
 
-/**
- * 
- * notesRouter.get("/", (request, response) => {
-  Note.find({}).then((notes) => {
-    response.json(notes);
-  });
-  return;
-});
- */
-
 notesRouter.get("/", async (request, response) => {
   const notes = await Note.find({});
   response.json(notes);
@@ -39,12 +29,6 @@ notesRouter.delete("/:id", async (request, response, next) => {
   } catch (exception) {
     next(exception);
   }
-
-  // Note.findByIdAndRemove(request.params.id)
-  //   .then((result) => {
-  //     response.status(204).end();
-  //   })
-  //   .catch((error) => next(error));
 });
 
 // POST Add a new resource
