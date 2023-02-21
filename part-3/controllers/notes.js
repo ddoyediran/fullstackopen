@@ -23,12 +23,8 @@ notesRouter.get("/:id", async (request, response, next) => {
 
 // DELETE Remove a single resource
 notesRouter.delete("/:id", async (request, response, next) => {
-  try {
-    await Note.findByIdAndRemove(request.params.id);
-    response.status(204).end();
-  } catch (exception) {
-    next(exception);
-  }
+  await Note.findByIdAndRemove(request.params.id);
+  response.status(204).end();
 });
 
 // POST Add a new resource
@@ -40,13 +36,9 @@ notesRouter.post("/", async (request, response, next) => {
     important: body.important || false,
   });
 
-  try {
-    const savedNote = await note.save();
+  const savedNote = await note.save();
 
-    response.status(201).json(savedNote);
-  } catch (exception) {
-    next(exception);
-  }
+  response.status(201).json(savedNote);
 });
 
 // PUT - Update the database
