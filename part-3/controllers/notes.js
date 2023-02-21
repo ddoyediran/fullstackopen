@@ -7,28 +7,24 @@ notesRouter.get("/", async (request, response) => {
 });
 
 // GET: fetches a single resource
-notesRouter.get("/:id", async (request, response, next) => {
-  try {
-    const note = await Note.findById(request.params.id);
+notesRouter.get("/:id", async (request, response) => {
+  const note = await Note.findById(request.params.id);
 
-    if (!note) {
-      return response.status(404).end();
-    }
-
-    response.json(note);
-  } catch (exception) {
-    next(exception);
+  if (!note) {
+    return response.status(404).end();
   }
+
+  response.json(note);
 });
 
 // DELETE Remove a single resource
-notesRouter.delete("/:id", async (request, response, next) => {
+notesRouter.delete("/:id", async (request, response) => {
   await Note.findByIdAndRemove(request.params.id);
   response.status(204).end();
 });
 
 // POST Add a new resource
-notesRouter.post("/", async (request, response, next) => {
+notesRouter.post("/", async (request, response) => {
   const body = request.body;
 
   const note = new Note({
