@@ -78,9 +78,10 @@ test("note without content is not added", async () => {
 
   await api.post("/api/notes").send(newNote).expect(400);
 
-  const response = await api.get("/api/notes");
+  const notesAtEnd = await helper.notesInDb();
+  //const response = await api.get("/api/notes");
 
-  expect(response.body).toHaveLength(initialNotes.length);
+  expect(notesAtEnd).toHaveLength(helper.initialNotes.length);
 });
 
 afterAll(async () => {
