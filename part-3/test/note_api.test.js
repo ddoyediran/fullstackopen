@@ -6,19 +6,6 @@ const helper = require("./test_helper");
 const api = supertest(app);
 const Note = require("../models/note");
 
-// const initialNotes = [
-//   {
-//     content: "HTML is easy",
-//     important: false,
-//     date: new Date(),
-//   },
-//   {
-//     content: "Browser can execute only JavaScript",
-//     important: true,
-//     date: new Date(),
-//   },
-// ];
-
 // delete all data in the database and add new ones
 beforeEach(async () => {
   await Note.deleteMany({});
