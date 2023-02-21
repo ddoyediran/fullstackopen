@@ -5,6 +5,7 @@ const logger = require("./utils/logger");
 const middleware = require("./utils/middleware");
 require("dotenv").config();
 const mongoose = require("mongoose");
+require("express-async-errors");
 const notesRouter = require("./controllers/notes");
 
 const app = express();
