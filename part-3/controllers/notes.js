@@ -32,12 +32,19 @@ notesRouter.get("/:id", async (request, response, next) => {
 });
 
 // DELETE Remove a single resource
-notesRouter.delete("/:id", (request, response, next) => {
-  Note.findByIdAndRemove(request.params.id)
-    .then((result) => {
-      response.status(204).end();
-    })
-    .catch((error) => next(error));
+notesRouter.delete("/:id", async (request, response, next) => {
+  try {
+    await Note.findByIdAndRemove(request.params.id);
+    response.status(204).end();
+  } catch (exception) {
+    next(exception);
+  }
+
+  // Note.findByIdAndRemove(request.params.id)
+  //   .then((result) => {
+  //     response.status(204).end();
+  //   })
+  //   .catch((error) => next(error));
 });
 
 // POST Add a new resource
@@ -56,13 +63,6 @@ notesRouter.post("/", async (request, response, next) => {
   } catch (exception) {
     next(exception);
   }
-
-  // note
-  //   .save()
-  //   .then((savedNote) => {
-  //     response.status(201).json(savedNote);
-  //   })
-  //   .catch((error) => next(error));
 });
 
 // PUT - Update the database
