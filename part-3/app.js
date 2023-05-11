@@ -7,6 +7,7 @@ require("dotenv").config();
 const mongoose = require("mongoose");
 require("express-async-errors");
 const notesRouter = require("./controllers/notes");
+const usersRouter = require("./controllers/user");
 
 const app = express();
 
@@ -29,6 +30,7 @@ app.use(middleware.requestLogger);
 app.use(express.static("build"));
 
 app.use("/api/notes", notesRouter);
+app.use("/api/users", usersRouter);
 
 app.use(middleware.unknownEndpoint);
 app.use(middleware.errorHandler);
